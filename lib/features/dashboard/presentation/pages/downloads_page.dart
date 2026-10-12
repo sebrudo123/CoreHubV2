@@ -182,23 +182,22 @@ class _DownloadTaskCardState extends State<_DownloadTaskCard> {
             onSelect: () => setState(() => _paused = !_paused),
             builder: (BuildContext context, bool focused) {
               return Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 10,
-                  ),
-                  decoration: BoxDecoration(
-                    gradient: focused ? AppColors.primaryGradient : null,
-                    color: focused ? null : AppColors.glass,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppColors.glassBorder),
-                  ),
-                  child: Text(
-                    _paused ? 'Reanudar' : 'Pausar',
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          fontSize: 11,
-                          color: focused ? Colors.white : AppColors.textSecondary,
-                        ),
-                  ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  gradient: focused ? AppColors.primaryGradient : null,
+                  color: focused ? null : AppColors.glass,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppColors.glassBorder),
+                ),
+                child: Text(
+                  _paused ? 'Reanudar' : 'Pausar',
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        fontSize: 11,
+                        color: focused ? Colors.white : AppColors.textSecondary,
+                      ),
                 ),
               );
             },

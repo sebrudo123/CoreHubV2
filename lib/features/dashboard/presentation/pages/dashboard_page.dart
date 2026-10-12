@@ -109,7 +109,6 @@ class _LibraryShellState extends State<_LibraryShell> {
 
   @override
   Widget build(BuildContext context) {
-    final LibraryFilter filter = LibraryFilter.values[_tab];
     return Column(
       children: <Widget>[
         Padding(
