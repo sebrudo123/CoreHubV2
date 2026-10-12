@@ -76,7 +76,10 @@ flutter build appbundle --release    # AAB para Play Store
 
 - `.github/workflows/build_apk.yml` — en cada push/PR: `pub get` → `analyze` →
   `build apk --release` y publica el artefacto **`corehub-release-apk`**
-  (contiene `corehub-release.apk`).
+  (contiene `corehub-release.apk`). En cada push a `main` además crea un
+  **GitHub Release** (tag `build-N`) con el APK adjunto y un changelog
+  automático generado a partir de los mensajes de commit (secciones
+  "Novedades / Correcciones / Otros cambios") → https://github.com/sebrudo123/CoreHubV2/releases/latest
 - `.github/workflows/release_stores.yml` — manual (`workflow_dispatch`) o tag
   `v*`: genera **AAB + APK** y, opcionalmente, sube a Play; y genera build iOS
   (firmado si hay credenciales, sin firmar si no).

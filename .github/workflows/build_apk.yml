@@ -1,23 +1,25 @@
-name: Build Android APK
+name: Build & Release APK
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
-    name: Analyze & Build release APK
+    name: Analyze, build & release APK
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Java 21
         uses: actions/setup-java@v4
@@ -49,6 +51,26 @@ jobs:
           cp build/app/outputs/flutter-apk/app-release.apk artifacts/corehub-release.apk
           ls -lh artifacts
 
+      - name: Generate changelog
+        run: |
+          PREV_TAG=$(git tag --sort=-creatordate | grep -E '^build-' | head -n1 || true)
+          if [ -n "$PREV_TAG" ]; then RANGE="$PREV_TAG..HEAD"; else RANGE=""; fi
+          {
+            echo "## Novedades"
+            git log $RANGE --pretty=format:'- %s' --grep='^feat' -i || true
+            echo
+            echo
+            echo "## Correcciones"
+            git log $RANGE --pretty=format:'- %s' --grep='^fix' -i || true
+            echo
+            echo
+            echo "## Otros cambios"
+            git log $RANGE --pretty=format:'- %s' --invert-grep --grep='^feat' --grep='^fix' -i --no-merges || true
+            echo
+          } > CHANGELOG_BODY.md
+          echo "----- notas del release -----"
+          cat CHANGELOG_BODY.md
+
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
@@ -56,3 +78,15 @@ jobs:
           path: artifacts/corehub-release.apk
           if-no-files-found: error
           retention-days: 30
+
+      - name: Publish GitHub Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: CoreHub build ${{ github.run_number }}
+          body_path: CHANGELOG_BODY.md
+          files: artifacts/corehub-release.apk
+          draft: false
+          prerelease: false
+          make_latest: true
