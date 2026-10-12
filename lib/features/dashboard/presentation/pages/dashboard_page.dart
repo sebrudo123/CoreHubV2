@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../../../../shared/theme/app_colors.dart';
 import '../../../../shared/widgets/animated_background.dart';
 import '../../../../shared/widgets/game_focus.dart';
-import '../../../../shared/widgets/glass_card.dart';
 import '../../../library/domain/entities/library_filter.dart';
 import '../../../library/presentation/controllers/library_controller.dart';
 import '../../../library/presentation/pages/library_page.dart';
