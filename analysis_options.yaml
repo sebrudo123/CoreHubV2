@@ -1,0 +1,20 @@
+# === GameHub / DroidDeck analysis configuration ===
+# Correctness lints stay on; purely stylistic const/final lints are relaxed to
+# keep CI (flutter analyze) deterministic across Flutter SDK minor versions.
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  errors:
+    invalid_annotation_target: ignore
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+
+linter:
+  rules:
+    prefer_const_constructors: false
+    prefer_const_literals_to_create_immutables: false
+    prefer_const_declarations: false
+    prefer_final_locals: false
+    public_member_api_docs: false
+    lines_longer_than_80_chars: false

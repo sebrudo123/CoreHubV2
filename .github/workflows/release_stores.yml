@@ -1,0 +1,163 @@
+name: Release (Play Store / App Store)
+
+# Manual / tag-triggered release pipeline.
+#  * Android : builds a signed AAB (+ APK) for Google Play.
+#  * iOS     : generates the Xcode project and builds an (unsigned by default)
+#              archive for App Store Connect / TestFlight.
+#
+# Required repository secrets to ENABLE signing & store uploads:
+#   ANDROID_KEYSTORE_BASE64, ANDROID_STORE_PASSWORD, ANDROID_KEY_PASSWORD,
+#   ANDROID_KEY_ALIAS
+#   PLAY_SERVICE_ACCOUNT_JSON
+#   IOS_DIST_CERT_BASE64, IOS_DIST_CERT_PASSWORD, IOS_PROVISIONING_PROFILE_BASE64,
+#   APPLE_TEAM_ID, APPLE_ID, APPLE_APP_PASSWORD
+#
+# When secrets are absent the jobs still run and only upload unsigned artifacts.
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+env:
+  ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+  PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+  IOS_DIST_CERT_BASE64: ${{ secrets.IOS_DIST_CERT_BASE64 }}
+
+jobs:
+  android:
+    name: Android · Play Store (AAB)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Resolve dependencies
+        run: flutter pub get
+
+      - name: Static analysis
+        run: flutter analyze
+
+      - name: Decode release keystore
+        if: env.ANDROID_KEYSTORE_BASE64 != ''
+        run: echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > android/app/release-key.jks
+
+      - name: Configure signing
+        if: env.ANDROID_KEYSTORE_BASE64 != ''
+        run: |
+          cat > android/key.properties <<EOF
+          storePassword=${{ secrets.ANDROID_STORE_PASSWORD }}
+          keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}
+          keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}
+          storeFile=release-key.jks
+          EOF
+
+      - name: Build App Bundle
+        run: flutter build appbundle --release
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Collect artifacts
+        run: |
+          mkdir -p artifacts
+          cp build/app/outputs/bundle/release/app-release.aab artifacts/gamehub-release.aab
+          cp build/app/outputs/flutter-apk/app-release.apk artifacts/gamehub-release.apk
+          ls -lh artifacts
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gamehub-android-release
+          path: artifacts/*
+          if-no-files-found: error
+
+      - name: Upload to Google Play (internal track)
+        if: env.PLAY_SERVICE_ACCOUNT_JSON != ''
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.gamehub.droiddeck
+          releaseFiles: build/app/outputs/bundle/release/app-release.aab
+          track: internal
+          status: draft
+
+  ios:
+    name: iOS · App Store (archive)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Resolve dependencies
+        run: flutter pub get
+
+      - name: Generate iOS platform project
+        # iOS scaffolding is generated here so the repo stays buildable without
+        # committing Xcode machine-specific files.
+        run: flutter create --platforms=ios --org com.gamehub --project-name gamehub .
+
+      - name: Import distribution certificate
+        if: env.IOS_DIST_CERT_BASE64 != ''
+        uses: apple-actions/import-codesign-certs@v3
+        with:
+          p12-file-base64: ${{ secrets.IOS_DIST_CERT_BASE64 }}
+          p12-password: ${{ secrets.IOS_DIST_CERT_PASSWORD }}
+
+      - name: Install provisioning profile
+        if: env.IOS_DIST_CERT_BASE64 != ''
+        run: |
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          echo "${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}" | base64 -d \
+            > ~/Library/MobileDevice/Provisioning\ Profiles/gamehub.mobileprovision
+
+      - name: Build signed IPA
+        if: env.IOS_DIST_CERT_BASE64 != ''
+        run: flutter build ipa --release --export-method app-store
+
+      - name: Build unsigned archive (fallback)
+        if: env.IOS_DIST_CERT_BASE64 == ''
+        run: flutter build ios --release --no-codesign
+
+      - name: Package unsigned app
+        if: env.IOS_DIST_CERT_BASE64 == ''
+        run: |
+          mkdir -p artifacts
+          cd build/ios/iphoneos
+          zip -r ../../../artifacts/gamehub-ios-unsigned.zip Runner.app
+          ls -lh ../../../artifacts
+
+      - uses: actions/upload-artifact@v4
+        if: env.IOS_DIST_CERT_BASE64 == ''
+        with:
+          name: gamehub-ios-unsigned
+          path: artifacts/gamehub-ios-unsigned.zip
+          if-no-files-found: error
+
+      - name: Upload to App Store Connect / TestFlight
+        if: env.IOS_DIST_CERT_BASE64 != ''
+        run: |
+          xcrun altool --upload-app \
+            -f build/ios/ipa/*.ipa \
+            -t ios \
+            -u "${{ secrets.APPLE_ID }}" \
+            -p "${{ secrets.APPLE_APP_PASSWORD }}"

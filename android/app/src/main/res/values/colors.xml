@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="launch_background">#FF090B10</color>
+    <color name="ic_launcher_background">#FF090B10</color>
+    <color name="neon_blue">#FF007AFF</color>
+    <color name="neon_pink">#FFFF0055</color>
+</resources>
