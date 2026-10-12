@@ -108,7 +108,9 @@ flutter build appbundle --release    # AAB para Play Store
 
 ### iOS / App Store
 
-- Flutter requiere **iOS 13+**: **no es posible** compilar para iOS 9.
+- Flutter (versión actual) requiere **iOS 15+**: **no es posible** compilar para
+  iOS 10 (ni 9). Para iOS 10 haría falta una app nativa en Swift/Objective-C
+  aparte, compilada con Xcode en macOS.
 - El workflow iOS hace `flutter create --platforms=ios .` en un runner macOS.
 - Enviar a App Store requiere macOS + Xcode, certificados de distribución,
   App ID y cuenta de Apple Developer (99 USD/año). Sin credenciales solo se
