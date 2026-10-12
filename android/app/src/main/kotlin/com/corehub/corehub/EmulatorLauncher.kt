@@ -1,4 +1,4 @@
-package com.gamehub.droiddeck
+package com.corehub.corehub
 
 import android.content.Context
 import android.content.Intent
@@ -16,7 +16,7 @@ import java.io.File
 class EmulatorLauncher(private val context: Context) : MethodChannel.MethodCallHandler {
 
     companion object {
-        const val CHANNEL = "com.gamehub/emulator"
+        const val CHANNEL = "com.corehub/emulator"
 
         private val RETROARCH = listOf(
             "com.retroarch.aarch64",

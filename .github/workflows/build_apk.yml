@@ -46,13 +46,13 @@ jobs:
       - name: Prepare artifact
         run: |
           mkdir -p artifacts
-          cp build/app/outputs/flutter-apk/app-release.apk artifacts/gamehub-release.apk
+          cp build/app/outputs/flutter-apk/app-release.apk artifacts/corehub-release.apk
           ls -lh artifacts
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: gamehub-release-apk
-          path: artifacts/gamehub-release.apk
+          name: corehub-release-apk
+          path: artifacts/corehub-release.apk
           if-no-files-found: error
           retention-days: 30

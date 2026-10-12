@@ -76,13 +76,13 @@ jobs:
       - name: Collect artifacts
         run: |
           mkdir -p artifacts
-          cp build/app/outputs/bundle/release/app-release.aab artifacts/gamehub-release.aab
-          cp build/app/outputs/flutter-apk/app-release.apk artifacts/gamehub-release.apk
+          cp build/app/outputs/bundle/release/app-release.aab artifacts/corehub-release.aab
+          cp build/app/outputs/flutter-apk/app-release.apk artifacts/corehub-release.apk
           ls -lh artifacts
 
       - uses: actions/upload-artifact@v4
         with:
-          name: gamehub-android-release
+          name: corehub-android-release
           path: artifacts/*
           if-no-files-found: error
 
@@ -91,7 +91,7 @@ jobs:
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
-          packageName: com.gamehub.droiddeck
+          packageName: com.corehub.corehub
           releaseFiles: build/app/outputs/bundle/release/app-release.aab
           track: internal
           status: draft
@@ -114,7 +114,7 @@ jobs:
       - name: Generate iOS platform project
         # iOS scaffolding is generated here so the repo stays buildable without
         # committing Xcode machine-specific files.
-        run: flutter create --platforms=ios --org com.gamehub --project-name gamehub .
+        run: flutter create --platforms=ios --org com.corehub --project-name corehub .
 
       - name: Import distribution certificate
         if: env.IOS_DIST_CERT_BASE64 != ''
@@ -128,7 +128,7 @@ jobs:
         run: |
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           echo "${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}" | base64 -d \
-            > ~/Library/MobileDevice/Provisioning\ Profiles/gamehub.mobileprovision
+            > ~/Library/MobileDevice/Provisioning\ Profiles/corehub.mobileprovision
 
       - name: Build signed IPA
         if: env.IOS_DIST_CERT_BASE64 != ''
@@ -143,14 +143,14 @@ jobs:
         run: |
           mkdir -p artifacts
           cd build/ios/iphoneos
-          zip -r ../../../artifacts/gamehub-ios-unsigned.zip Runner.app
+          zip -r ../../../artifacts/corehub-ios-unsigned.zip Runner.app
           ls -lh ../../../artifacts
 
       - uses: actions/upload-artifact@v4
         if: env.IOS_DIST_CERT_BASE64 == ''
         with:
-          name: gamehub-ios-unsigned
-          path: artifacts/gamehub-ios-unsigned.zip
+          name: corehub-ios-unsigned
+          path: artifacts/corehub-ios-unsigned.zip
           if-no-files-found: error
 
       - name: Upload to App Store Connect / TestFlight

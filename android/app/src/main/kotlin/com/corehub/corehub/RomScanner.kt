@@ -1,4 +1,4 @@
-package com.gamehub.droiddeck
+package com.corehub.corehub
 
 import android.content.Context
 import android.os.Environment
@@ -14,7 +14,7 @@ import java.io.File
 class RomScanner(private val context: Context) : MethodChannel.MethodCallHandler {
 
     companion object {
-        const val CHANNEL = "com.gamehub/rom_scanner"
+        const val CHANNEL = "com.corehub/rom_scanner"
         private const val MAX_DEPTH = 6
 
         private val ROM_EXTENSIONS = setOf(

@@ -1,4 +1,4 @@
-package com.gamehub.droiddeck
+package com.corehub.corehub
 
 import android.content.Context
 import android.content.Intent
@@ -15,7 +15,7 @@ import io.flutter.plugin.common.MethodChannel
 class InstalledApps(private val context: Context) : MethodChannel.MethodCallHandler {
 
     companion object {
-        const val CHANNEL = "com.gamehub/apps"
+        const val CHANNEL = "com.corehub/apps"
 
         // Cloud/streaming clients that are not always tagged as games.
         private val KNOWN_GAME_PACKAGES = setOf(

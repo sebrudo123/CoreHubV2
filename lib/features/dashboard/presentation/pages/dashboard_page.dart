@@ -169,7 +169,7 @@ class _Brand extends StatelessWidget {
           shaderCallback: (Rect bounds) =>
               AppColors.primaryGradient.createShader(bounds),
           child: const Text(
-            'DROID\nDECK',
+            'CORE\nHUB',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontWeight: FontWeight.w900,

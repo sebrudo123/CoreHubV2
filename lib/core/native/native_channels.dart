@@ -4,9 +4,9 @@ import 'package:flutter/services.dart';
 class NativeChannels {
   NativeChannels._();
 
-  static const MethodChannel romScanner = MethodChannel('com.gamehub/rom_scanner');
-  static const MethodChannel emulator = MethodChannel('com.gamehub/emulator');
-  static const MethodChannel system = MethodChannel('com.gamehub/system');
-  static const MethodChannel apps = MethodChannel('com.gamehub/apps');
-  static const EventChannel gamepad = EventChannel('com.gamehub/gamepad');
+  static const MethodChannel romScanner = MethodChannel('com.corehub/rom_scanner');
+  static const MethodChannel emulator = MethodChannel('com.corehub/emulator');
+  static const MethodChannel system = MethodChannel('com.corehub/system');
+  static const MethodChannel apps = MethodChannel('com.corehub/apps');
+  static const EventChannel gamepad = EventChannel('com.corehub/gamepad');
 }

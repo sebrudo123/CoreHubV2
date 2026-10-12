@@ -1,5 +1,5 @@
-name: gamehub
-description: "DroidDeck GameHub - Launcher/Dashboard de juegos industrial para Android (Flutter + Clean Architecture)."
+name: corehub
+description: "CoreHub - Launcher/Dashboard de juegos industrial para Android (Flutter + Clean Architecture)."
 publish_to: "none"
 version: 1.0.0+1
 

@@ -1,4 +1,4 @@
-# DroidDeck GameHub
+# CoreHub
 
 Launcher / dashboard de juegos industrial para Android, construido con **Flutter**
 y **Clean Architecture**. Escanea ROMs, lanza emuladores y apps instaladas, se
@@ -44,13 +44,13 @@ lib/
 
 | Canal | Tipo | Métodos |
 | --- | --- | --- |
-| `com.gamehub/rom_scanner` | MethodChannel | `discoverRoots`, `scan` |
-| `com.gamehub/emulator` | MethodChannel | `listEmulators`, `launch` |
-| `com.gamehub/system` | MethodChannel | `getStats` |
-| `com.gamehub/apps` | MethodChannel | `getGames`, `launch` |
-| `com.gamehub/gamepad` | EventChannel | stream de ejes analógicos |
+| `com.corehub/rom_scanner` | MethodChannel | `discoverRoots`, `scan` |
+| `com.corehub/emulator` | MethodChannel | `listEmulators`, `launch` |
+| `com.corehub/system` | MethodChannel | `getStats` |
+| `com.corehub/apps` | MethodChannel | `getGames`, `launch` |
+| `com.corehub/gamepad` | EventChannel | stream de ejes analógicos |
 
-Código nativo en `android/app/src/main/kotlin/com/gamehub/droiddeck/`.
+Código nativo en `android/app/src/main/kotlin/com/corehub/corehub/`.
 
 ## Requisitos
 
@@ -75,8 +75,8 @@ flutter build appbundle --release    # AAB para Play Store
 ## CI/CD (GitHub Actions)
 
 - `.github/workflows/build_apk.yml` — en cada push/PR: `pub get` → `analyze` →
-  `build apk --release` y publica el artefacto **`gamehub-release-apk`**
-  (contiene `gamehub-release.apk`).
+  `build apk --release` y publica el artefacto **`corehub-release-apk`**
+  (contiene `corehub-release.apk`).
 - `.github/workflows/release_stores.yml` — manual (`workflow_dispatch`) o tag
   `v*`: genera **AAB + APK** y, opcionalmente, sube a Play; y genera build iOS
   (firmado si hay credenciales, sin firmar si no).

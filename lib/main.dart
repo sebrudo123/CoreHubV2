@@ -64,7 +64,7 @@ Future<void> main() async {
               SystemMonitorController(repository: systemRepository)..start(),
         ),
       ],
-      child: const GameHubApp(),
+      child: const CoreHubApp(),
     ),
   );
 }

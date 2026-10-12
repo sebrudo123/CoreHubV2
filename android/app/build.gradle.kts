@@ -14,7 +14,7 @@ if (hasReleaseKeystore) {
 }
 
 android {
-    namespace = "com.gamehub.droiddeck"
+    namespace = "com.corehub.corehub"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -24,7 +24,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.gamehub.droiddeck"
+        applicationId = "com.corehub.corehub"
         // Adaptive launcher icons require API 26+.
         minSdk = 26
         targetSdk = flutter.targetSdkVersion

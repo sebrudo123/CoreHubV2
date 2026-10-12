@@ -1,4 +1,4 @@
-package com.gamehub.droiddeck
+package com.corehub.corehub
 
 import android.app.ActivityManager
 import android.content.Context
@@ -19,7 +19,7 @@ import java.io.File
 class SystemMonitor(private val context: Context) : MethodChannel.MethodCallHandler {
 
     companion object {
-        const val CHANNEL = "com.gamehub/system"
+        const val CHANNEL = "com.corehub/system"
         private const val CPU_SAMPLE_MS = 200L
     }
 

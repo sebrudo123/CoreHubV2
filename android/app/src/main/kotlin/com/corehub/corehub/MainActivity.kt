@@ -1,4 +1,4 @@
-package com.gamehub.droiddeck
+package com.corehub.corehub
 
 import android.view.InputDevice
 import android.view.MotionEvent

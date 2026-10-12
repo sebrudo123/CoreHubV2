@@ -1,4 +1,4 @@
-package com.gamehub.droiddeck
+package com.corehub.corehub
 
 import android.os.Handler
 import android.os.Looper
@@ -16,7 +16,7 @@ import io.flutter.plugin.common.EventChannel
 class GamepadChannel(private val messenger: BinaryMessenger) {
 
     companion object {
-        const val CHANNEL = "com.gamehub/gamepad"
+        const val CHANNEL = "com.corehub/gamepad"
         private const val EMIT_INTERVAL_MS = 16L // ~60 Hz
     }
 
