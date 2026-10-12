@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../shared/theme/app_colors.dart';
 import '../../../../shared/widgets/section_header.dart';
 import '../../domain/entities/streaming_service.dart';
-import 'streaming_card.dart';
+import '../widgets/streaming_card.dart';
 
 class StreamingPage extends StatelessWidget {
   const StreamingPage({super.key});

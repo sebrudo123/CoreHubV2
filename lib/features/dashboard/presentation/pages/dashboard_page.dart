@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../shared/theme/app_colors.dart';
-import '../../../shared/widgets/animated_background.dart';
-import '../../../shared/widgets/game_focus.dart';
-import '../../../shared/widgets/glass_card.dart';
-import '../../library/domain/entities/library_filter.dart';
-import '../../library/presentation/controllers/library_controller.dart';
-import '../../library/presentation/pages/library_page.dart';
-import '../../streaming/presentation/pages/streaming_page.dart';
-import '../../system/presentation/pages/settings_page.dart';
-import '../../system/presentation/widgets/system_monitor_panel.dart';
+import '../../../../shared/theme/app_colors.dart';
+import '../../../../shared/widgets/animated_background.dart';
+import '../../../../shared/widgets/game_focus.dart';
+import '../../../../shared/widgets/glass_card.dart';
+import '../../../library/domain/entities/library_filter.dart';
+import '../../../library/presentation/controllers/library_controller.dart';
+import '../../../library/presentation/pages/library_page.dart';
+import '../../../streaming/presentation/pages/streaming_page.dart';
+import '../../../system/presentation/pages/settings_page.dart';
+import '../../../system/presentation/widgets/system_monitor_panel.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});

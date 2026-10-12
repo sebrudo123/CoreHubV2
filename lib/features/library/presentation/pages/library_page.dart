@@ -7,7 +7,7 @@ import '../../../../shared/widgets/section_header.dart';
 import '../../domain/entities/game.dart';
 import '../../domain/entities/library_filter.dart';
 import '../controllers/library_controller.dart';
-import 'game_grid.dart';
+import '../widgets/game_grid.dart';
 
 class LibraryPage extends StatelessWidget {
   const LibraryPage({
